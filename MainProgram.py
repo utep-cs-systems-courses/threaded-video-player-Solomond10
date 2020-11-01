@@ -84,9 +84,10 @@ def display(q2):
         
     print("Display Complete")
 
-semaphore = threading.Semaphore(3)
+#Bounded Semaphore ensures that there is a limit on the amount of stuff placed inside the queue
+#and that an empty queue is never read from   
+semaphore = threading.BoundedSemaphore(3)
 fileName = 'clip.mp4'
-frameDelay   = 42       # the answer to everything
 framesToLoad = 400
 
 queue1 = queue.Queue()
