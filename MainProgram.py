@@ -25,6 +25,7 @@ def extract(clipFileName, q1, maxFramesToLoad=9999):
 
             # add the frame to queue 1
             put(q1,image)
+            print("Q!")
             success,image = vidcap.read()
             print(f'Reading frame {count} {success}')
             count += 1
@@ -75,27 +76,52 @@ def display(q2):
     print("Display Complete")
 
 def put(queue,item):
-    
-    empty.acquire()
-    mutex.acquire()
-    queue.put(item)
-    mutex.release()
-    full.release()
 
+    if queue == queue1:
+
+        print("We're in Q1 - PUT")
+        emptyQ1.acquire()
+        mutex.acquire()
+        queue.put(item)
+        mutex.release()
+        fullQ1.release()
+
+
+    else:
+        print("We're in Q2 - PUT")
+        emptyQ2.acquire()
+        mutex.acquire()
+        queue.put(item)
+        mutex.release()
+        fullQ2.release()
+        
 def get(queue):
 
-    full.acquire()
-    mutex.acquire()
-    queue.get()
-    mutex.release()
-    empty.release()
+    if queue == queue1:
+
+        print("We're in Q1 - GET")
+        emptyQ1.acquire()
+        mutex.acquire()
+        queue.get()
+        mutex.release()
+        fullQ1.release()
+
+    else:
+        print("We're in Q2 - GET")
+        emptyQ2.acquire()
+        mutex.acquire()
+        queue.get()
+        mutex.release()
+        fullQ2.release()
     
 #Bounded Semaphore ensures that there is a limit on the amount of stuff placed inside the queue
 #and that an empty queue is never read from   
 
 mutex = threading.Lock()
-empty = threading.BoundedSemaphore(24)
-full = threading.BoundedSemaphore(0)
+emptyQ1 = threading.BoundedSemaphore(24)
+fullQ1 = threading.BoundedSemaphore(0)
+emptyQ2 = threading.BoundedSemaphore(24)
+fullQ2 = threading.BoundedSemaphore(0)
 
 fileName = 'clip.mp4'
 framesToLoad = 400
