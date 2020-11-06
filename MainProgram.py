@@ -115,9 +115,9 @@ def get(queue):
 mutexQ1 = threading.Lock()
 mutexQ2 = threading.Lock()
 
-emptyQ1 = threading.Semaphore(24)
+emptyQ1 = threading.BoundedSemaphore(24)
 fullQ1 = threading.Semaphore(0)
-emptyQ2 = threading.Semaphore(24)
+emptyQ2 = threading.BoundedSemaphore(24)
 fullQ2 = threading.Semaphore(0)
 
 fileName = 'clip.mp4'
