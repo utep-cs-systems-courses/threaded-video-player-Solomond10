@@ -111,8 +111,6 @@ def get(queue):
         emptyQ2.release()
 
     return im
-#Bounded Semaphore ensures that there is a limit on the amount of stuff placed inside the queue
-#and that an empty queue is never read from   
 
 mutexQ1 = threading.Lock()
 mutexQ2 = threading.Lock()
